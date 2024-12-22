@@ -2,9 +2,77 @@ import telebot
 
 import time, threading, schedule
 from telebot import TeleBot
+from telebot import apihelper
+
+apihelper.ENABLE_MIDDLEWARE = True
 
 API_TOKEN = '8119500631:AAHDitnnXOQOw--jbpbgLmS4bOx_SK7LN9E'
 bot = TeleBot(API_TOKEN)
+
+
+# use in for delete with the necessary scope and language_code if necessary
+bot.delete_my_commands(scope=None, language_code=None)
+
+bot.set_my_commands(
+    commands=[
+        telebot.types.BotCommand("command1", "command1 description"),
+        telebot.types.BotCommand("command2", "command2 description")
+    ],
+    
+     scope=telebot.types.BotCommandScopeAllPrivateChats()  # use for all private chats
+
+     
+)
+
+# check command
+cmd = bot.get_my_commands(scope=None, language_code=None)
+print([c.to_json() for c in cmd])
+
+
+
+INFO_STATE = 'ON_INFO_MENU'
+MAIN_STATE = 'ON_MAIN_MENU'
+
+SESSIONS = {
+    -10000: {
+        'state': INFO_STATE
+    },
+    -11111: {
+        'state': MAIN_STATE
+    }
+}
+
+@bot.message_handler(commands=["play"])
+def send_play(message):
+    bot.reply_to(message, "что включть-то... я ничего не умею делать :(")
+
+
+def get_or_create_session(user_id):
+    try:
+        return SESSIONS[user_id]
+    except KeyError:
+        SESSIONS[user_id] = {'state': MAIN_STATE}
+        return SESSIONS[user_id]
+
+
+bot = telebot.TeleBot('TOKEN')
+
+
+@bot.middleware_handler(update_types=['message'])
+def set_session(bot_instance, message):
+    bot_instance.session = get_or_create_session(message.from_user.id)
+
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.session['state'] = MAIN_STATE
+    bot.send_message(message.chat.id, bot.session['state'])
+
+
+@bot.message_handler(commands=['info'])
+def start(message):
+    bot.session['state'] = INFO_STATE
+    bot.send_message(message.chat.id, bot.session['state'])
 
 
 
@@ -56,7 +124,7 @@ def all_messages(message):
         bot.send_message(message.from_user.id,"Special characters",reply_markup=keyboard("Symbols"))
     elif message.text == "Normal":
         bot.send_message(message.from_user.id,"Normal Keyboard",reply_markup=keyboard("Normal"))
-    elif message.text == "Caps Lock":
+    elif message.text == "⭐Caps Lock":
         bot.send_message(message.from_user.id,"Caps Lock",reply_markup=keyboard("Caps"))
     elif message.text == "🔙Delete":
         bot.delete_message(message.from_user.id,message.message_id)
