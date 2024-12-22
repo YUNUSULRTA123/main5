@@ -3,7 +3,7 @@ import telebot
 import time, threading, schedule
 from telebot import TeleBot
 
-API_TOKEN = '<api_token>'
+API_TOKEN = '8119500631:AAHDitnnXOQOw--jbpbgLmS4bOx_SK7LN9E'
 bot = TeleBot(API_TOKEN)
 
 from telebot.types import (
@@ -14,10 +14,9 @@ from telebot.types import (
     InlineKeyboardButton
 )
 
-BOT_TOKEN = "" 
+
 WEB_URL = "https://pytelegrambotminiapp.vercel.app" 
 
-bot = TeleBot(BOT_TOKEN)
 
 @bot.message_handler(commands=["start"])
 def start(message):
