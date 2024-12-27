@@ -1,4 +1,4 @@
-фimport os
+import os
 import time
 import threading
 import schedule
