@@ -13,7 +13,7 @@ from telebot.types import (
 )
 
 # Инициализация бота
-API_TOKEN = os.getenv("API_TOKEN", "YOUR_API_TOKEN_HERE")
+API_TOKEN = os.getenv("8119500631:AAHDitnnXOQOw--jbpbgLmS4bOx_SK7LN9E", "8119500631:AAHDitnnXOQOw--jbpbgLmS4bOx_SK7LN9E")
 bot = telebot.TeleBot(API_TOKEN)
 
 # Глобальные переменные
@@ -102,13 +102,13 @@ def unset_timer(message):
 
 @bot.message_handler(commands=['hn2025'])
 def message_hn(message):
-    print('\n'.join([''.join([('2025 HNY '[(x-y)%8]
+    bot.send_message('\n'.join([''.join([('2025 HNY '[(x-y)%8]
         if((x*0.05)*2+(y*0.1)**2-1) 
             **3-(x*0.05)**2*(y*0.1)**3<=0 else' ')
                 for x in range(-30,30)])
                     for y in range(15,15,-1)])) 
     time.sleep(5)
-    print("""
+    bot.send_message("""
      ___                                                                                                                                                                        
 (   )                                                                                                                                                                       
  | | .-.     .---.     .-..      .-..    ___  ___     ___ .-.     .--.    ___  ___  ___    ___  ___    .--.     .---.   ___ .-.        .--.       .-.     .--.    ,-----.   
